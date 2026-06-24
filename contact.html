@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Contact — 4STARSMES GROUP</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="page-header">
+    <div class="container header-top">
+      <a class="brand" href="index.html#top">
+        <img src="images/WhatsApp Image 2026-06-24 at 10.47.20 AM.jpeg" alt="4STARSMES LOGO">
+        <div><span>4STARSMES</span><strong>GROUP LLC</strong></div>
+      </a>
+      <a class="btn btn-secondary" href="index.html">← Back Home</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="section">
+      <h1>Contact Us</h1>
+      <p class="eyebrow">We're here to help — reach out for consultations, training, or service inquiries.</p>
+      <form id="pageContactForm" class="contact-form" action="" method="GET">
+        <label>Full name<input type="text" name="name" required></label>
+        <label>Email address<input type="email" name="email" required></label>
+        <label>Phone (optional)<input type="tel" name="phone" pattern="[0-9+()\-\s]*"></label>
+        <label>Subject<input type="text" name="subject" required></label>
+        <label>Message<textarea name="message" rows="6" required></textarea></label>
+        <div class="form-feedback" id="pageContactFeedback" aria-live="polite" style="display:none; margin-top:8px; color:var(--primary);"></div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Send Message</button>
+        </div>
+      </form>
+      <p>If you prefer, email us directly at <a href="mailto:mesagbor@4starsmesgroup.com">mesagbor@4starsmesgroup.com</a> or message on WhatsApp: <a href="https://wa.me/13462197115">+1 (346) 219-7115</a>.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-bottom">
+      <p>© 2026 4STARSMES GROUP LLC. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Simple page contact form handler mirrors modal behaviour
+    (function () {
+      const form = document.getElementById('pageContactForm');
+      if (!form) return;
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const fd = new FormData(form);
+        const name = (fd.get('name') || '').toString().trim();
+        const email = (fd.get('email') || '').toString().trim();
+        const phone = (fd.get('phone') || '').toString().trim();
+        const subject = (fd.get('subject') || '').toString().trim();
+        const message = (fd.get('message') || '').toString().trim();
+        const feedback = document.getElementById('pageContactFeedback');
+        if (!name || !email || !subject || !message) {
+          feedback.style.display = 'block';
+          feedback.textContent = 'Please complete all required fields.';
+          return;
+        }
+        const to = 'mesagbor@4starsmesgroup.com';
+        const mailSubject = encodeURIComponent(subject);
+        const bodyParts = [
+          'Name: ' + name,
+          'Email: ' + email,
+          phone ? ('Phone: ' + phone) : '',
+          '',
+          message
+        ].filter(Boolean).join('\n');
+        const mailBody = encodeURIComponent(bodyParts);
+        const mailto = `mailto:${to}?subject=${mailSubject}&body=${mailBody}`;
+        try {
+          window.open(mailto);
+          feedback.style.display = 'block';
+          feedback.textContent = 'Your email client should open. If it does not, please email mesagbor@4starsmesgroup.com';
+        } catch (err) {
+          feedback.style.display = 'block';
+          feedback.textContent = 'Unable to open email client. Please email mesagbor@4starsmesgroup.com';
+        }
+        form.reset();
+      });
+    })();
+  </script>
+</body>
+</html>

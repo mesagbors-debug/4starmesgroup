@@ -44,6 +44,11 @@ document.addEventListener('DOMContentLoaded', function () {
     openModal();
   }));
 
+  // If the page loaded with #contact in the URL, open the modal
+  if (window.location && window.location.hash === '#contact') {
+    openModal();
+  }
+
   closeButtons && closeButtons.forEach(btn => btn.addEventListener('click', closeModal));
 
   function openModal() {
@@ -73,13 +78,49 @@ document.addEventListener('DOMContentLoaded', function () {
       const formData = new FormData(contactForm);
       const name = (formData.get('name') || '').toString().trim();
       const email = (formData.get('email') || '').toString().trim();
+      const phone = (formData.get('phone') || '').toString().trim();
+      const subject = (formData.get('subject') || '').toString().trim();
       const message = (formData.get('message') || '').toString().trim();
-      if (!name || !email || !message) {
-        alert('Please complete all fields before sending.');
+      const feedback = document.getElementById('contactFeedback');
+      if (!name || !email || !subject || !message) {
+        if (feedback) {
+          feedback.style.display = 'block';
+          feedback.textContent = 'Please complete all required fields.';
+        } else {
+          alert('Please complete all required fields.');
+        }
         return;
       }
-      // For now just simulate submission
-      alert('Thanks ' + name + '! Your message was sent (demo).');
+
+      // Build mailto fallback so user's email client opens with the message
+      const to = 'mesagbor@4starsmesgroup.com';
+      const mailSubject = encodeURIComponent(subject);
+      const bodyParts = [
+        'Name: ' + name,
+        'Email: ' + email,
+        phone ? ('Phone: ' + phone) : '',
+        '',
+        message
+      ].filter(Boolean).join('\n');
+      const mailBody = encodeURIComponent(bodyParts);
+      const mailto = `mailto:${to}?subject=${mailSubject}&body=${mailBody}`;
+
+      // Attempt to open mail client; also show a friendly message
+      try {
+        window.open(mailto);
+        if (feedback) {
+          feedback.style.display = 'block';
+          feedback.textContent = 'Your email client should open. If it does not, please email mesagbor@4starsmesgroup.com';
+        }
+      } catch (err) {
+        if (feedback) {
+          feedback.style.display = 'block';
+          feedback.textContent = 'Unable to open email client. Please email mesagbor@4starsmesgroup.com';
+        } else {
+          alert('Unable to open email client. Please email mesagbor@4starsmesgroup.com');
+        }
+      }
+
       contactForm.reset();
       closeModal();
     });

@@ -236,7 +236,10 @@
             <form id="contactForm" class="contact-form">
                 <label>Full name<input type="text" name="name" required></label>
                 <label>Email address<input type="email" name="email" required></label>
-                <label>Message<textarea name="message" rows="4" required></textarea></label>
+                <label>Phone (optional)<input type="tel" name="phone" pattern="[0-9+()\-\s]*"></label>
+                <label>Subject<input type="text" name="subject" required></label>
+                <label>Message<textarea name="message" rows="5" required></textarea></label>
+                <div class="form-feedback" id="contactFeedback" aria-live="polite" style="display:none; margin-top:8px; color:var(--primary);"></div>
                 <div class="form-actions">
                     <button type="submit" class="btn btn-primary">Send Message</button>
                     <button type="button" class="btn btn-secondary modal-close">Cancel</button>
